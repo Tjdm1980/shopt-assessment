@@ -330,6 +330,10 @@
             gap: 8px;
         }
 
+        .btn span {
+            display: inline-block;
+        }
+
         .btn-primary {
             background: var(--primary);
             color: var(--white);
@@ -510,6 +514,31 @@
             color: var(--primary);
         }
 
+        .success-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            z-index: 1001;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -548,6 +577,207 @@
             animation: pulse 2s infinite;
         }
 
+        .report-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-print {
+            background: #6B7280;
+            color: white;
+        }
+
+        .btn-print:hover {
+            background: #4B5563;
+        }
+
+        .btn-email {
+            background: #059669;
+            color: white;
+        }
+
+        .btn-email:hover {
+            background: #047857;
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+
+            .assessment-header,
+            .progress-container,
+            .assessment-card form,
+            .whatsapp-float,
+            .report-actions,
+            .success-notification {
+                display: none !important;
+            }
+
+            .print-header {
+                display: block;
+                text-align: center;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid #E5E7EB;
+            }
+
+            .print-header h1 {
+                font-size: 28px;
+                margin-bottom: 10px;
+            }
+
+            .print-logo {
+                font-size: 36px;
+                font-weight: bold;
+                color: #4F46E5 !important;
+                margin-bottom: 20px;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .print-header .print-date {
+                color: #6B7280;
+                margin-bottom: 5px;
+            }
+
+            .print-header .contact-info {
+                margin-top: 15px;
+            }
+
+            .print-header .contact-info p {
+                margin: 5px 0;
+                font-size: 14px;
+            }
+
+            .results-section {
+                display: block !important;
+            }
+
+            .score-card {
+                page-break-inside: avoid;
+                background: #F3F4F6 !important;
+                color: black !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .finding-card {
+                page-break-inside: avoid;
+                border: 1px solid #E5E7EB;
+                margin-bottom: 15px;
+            }
+
+            .finding-value {
+                color: black !important;
+                font-weight: bold;
+            }
+
+            .comparison-table {
+                page-break-inside: avoid;
+            }
+
+            .comparison-table th {
+                background: #F3F4F6 !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .check-mark {
+                color: #10B981 !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .cross-mark {
+                color: #EF4444 !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .cta-section {
+                page-break-inside: avoid;
+                background: #F3F4F6 !important;
+                color: black !important;
+                border: 2px solid #4F46E5;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .cta-section h2, .cta-section p {
+                color: black !important;
+            }
+
+            .offer-badge {
+                background: #4F46E5 !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .print-footer {
+                display: block;
+                margin-top: 40px;
+                padding-top: 20px;
+                border-top: 2px solid #E5E7EB;
+                text-align: center;
+            }
+
+            .print-footer p {
+                margin: 5px 0;
+                font-size: 12px;
+                color: #6B7280;
+            }
+
+            .print-footer h3 {
+                color: black;
+                font-size: 16px;
+            }
+
+            .print-footer ul {
+                margin: 10px 0;
+                padding-left: 20px;
+            }
+
+            .print-footer ol {
+                margin: 10px 0;
+                padding-left: 20px;
+            }
+
+            .print-footer li {
+                margin: 5px 0;
+                font-size: 12px;
+                color: #6B7280;
+            }
+
+            .print-footer h4 {
+                color: black;
+                font-size: 14px;
+                margin: 0;
+            }
+
+            a {
+                color: black !important;
+                text-decoration: underline !important;
+            }
+        }
+
+        .print-footer {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .assessment-header h1 {
                 font-size: 2rem;
@@ -574,6 +804,12 @@
             
             .whatsapp-tooltip {
                 display: none;
+            }
+            
+            .success-notification {
+                right: 10px;
+                left: 10px;
+                text-align: center;
             }
         }
     </style>
@@ -931,10 +1167,38 @@
 
             <!-- Results Section -->
             <div class="results-section" id="resultsSection">
+                <!-- Print Header (only visible when printing) -->
+                <div class="print-header">
+                    <div class="print-logo">SHOPT</div>
+                    <h1>E-commerce Platform Assessment Report</h1>
+                    <p class="print-date">Generated on: <span id="reportDate"></span></p>
+                    <p><strong>Prepared for:</strong> <span id="reportName"></span> at <span id="reportCompany"></span></p>
+                    <div class="contact-info">
+                        <p><strong>Your Shopt Contact:</strong></p>
+                        <p>Tom - E-commerce Specialist</p>
+                        <p>📧 Email: tom@shopt.co.za</p>
+                        <p>📱 WhatsApp: +27 76 207 2304</p>
+                        <p>🌐 Website: www.shopt.co.za</p>
+                    </div>
+                </div>
+
                 <div class="score-card">
                     <h2 class="score-label">Your E-commerce Efficiency Score</h2>
                     <div class="score-display" id="efficiencyScore">42</div>
                     <p>Industry Average: 65 | Top Performers: 85+</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="report-actions">
+                    <button class="btn btn-print" onclick="printReport()">
+                        <span>🖨️</span> Print Report
+                    </button>
+                    <button class="btn btn-email" onclick="emailReport()">
+                        <span>📧</span> Email Me This Report
+                    </button>
+                    <button class="btn btn-primary" onclick="shareReport()">
+                        <span>📤</span> Share with Team
+                    </button>
                 </div>
 
                 <div class="findings-grid">
@@ -1025,6 +1289,39 @@
                         Questions? Email <a href="mailto:tom@shopt.co.za" style="color: white; text-decoration: underline;">tom@shopt.co.za</a> or WhatsApp us
                     </p>
                 </div>
+
+                <!-- Print Footer (only visible when printing) -->
+                <div class="print-footer">
+                    <h3 style="margin-bottom: 15px;">Assessment Summary</h3>
+                    <p><strong>Current Platform:</strong> <span id="summaryPlatform"></span></p>
+                    <p><strong>Monthly Revenue:</strong> R<span id="summaryRevenue"></span></p>
+                    <p><strong>Key Opportunities Identified:</strong></p>
+                    <ul style="text-align: left; max-width: 600px; margin: 10px auto;">
+                        <li>Save <span id="summarySavings"></span> monthly by switching to Shopt</li>
+                        <li>Increase revenue by offering local payment methods</li>
+                        <li>Reduce support time with local assistance</li>
+                        <li>Eliminate currency volatility risks</li>
+                    </ul>
+                    
+                    <div style="background: #F3F4F6; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <h4 style="margin-bottom: 10px;">Your Next Steps:</h4>
+                        <ol style="text-align: left; max-width: 600px; margin: 0 auto;">
+                            <li>Share this report with your team</li>
+                            <li>Schedule a personalized demo with Tom</li>
+                            <li>Get a custom migration plan (if applicable)</li>
+                            <li>Take advantage of 25% off first 3 months (limited time)</li>
+                        </ol>
+                    </div>
+                    
+                    <p style="margin-top: 20px;"><strong>Ready to switch to Shopt?</strong></p>
+                    <p>Contact Tom directly:</p>
+                    <p>📧 tom@shopt.co.za | 📱 WhatsApp: +27 76 207 2304</p>
+                    <p>Visit www.shopt.co.za for more information</p>
+                    <p style="margin-top: 15px; font-style: italic;">
+                        This report is confidential and prepared specifically for <span id="footerCompany2"></span>
+                    </p>
+                    <p>© 2024 Shopt - Proudly South African E-commerce Platform</p>
+                </div>
             </div>
         </div>
     </div>
@@ -1036,6 +1333,11 @@
         <span>💬</span>
         <span class="whatsapp-tooltip">Need help? Chat with Tom on WhatsApp</span>
     </a>
+
+    <!-- Success Notification -->
+    <div class="success-notification" id="successNotification">
+        <span id="notificationText">Report shared successfully!</span>
+    </div>
 
     <script>
         let currentStep = 1;
@@ -1344,11 +1646,146 @@
             document.getElementById('resultsSection').style.display = 'block';
             document.querySelector('.progress-container').style.display = 'none';
             
+            // Populate print header with user data
+            const today = new Date().toLocaleDateString('en-ZA', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('reportDate').textContent = today;
+            document.getElementById('reportName').textContent = formData.name || 'Business Owner';
+            document.getElementById('reportCompany').textContent = formData.company || 'Your Company';
+            document.getElementById('footerCompany').textContent = formData.company || 'Your Company';
+            document.getElementById('footerCompany2').textContent = formData.company || 'Your Company';
+            
+            // Populate summary data
+            const platformNames = {
+                'none': 'Not selling online yet',
+                'shopify': 'Shopify',
+                'woocommerce': 'WooCommerce',
+                'other': 'Other/Custom Platform'
+            };
+            document.getElementById('summaryPlatform').textContent = platformNames[formData.platform] || 'Unknown';
+            document.getElementById('summaryRevenue').textContent = parseInt(formData.monthlyRevenue || 0).toLocaleString();
+            document.getElementById('summarySavings').textContent = document.getElementById('monthlySavings').textContent;
+            
             // Animate score
             animateScore();
             
             // Track completion
             console.log('Assessment completed:', formData);
+        }
+
+        function printReport() {
+            // Show print instructions
+            showNotification('Tip: Select "Save as PDF" in the print dialog to download your report');
+            
+            // Small delay to show notification before print dialog
+            setTimeout(() => {
+                window.print();
+                
+                // Show success message after print dialog closes
+                setTimeout(() => {
+                    if (confirm('Did you successfully save/print your report? Would you like Tom to follow up with additional insights?')) {
+                        window.open(`https://wa.me/27762072304?text=Hi%20Tom%2C%20I%20just%20printed%20my%20assessment%20report%20(${formData.email}).%20I%27d%20like%20to%20discuss%20the%20findings.`, '_blank');
+                    }
+                }, 1000);
+            }, 100);
+        }
+
+        function emailReport() {
+            const subject = encodeURIComponent('Your Shopt E-commerce Assessment Report');
+            const monthlyRevenue = parseFloat(formData.monthlyRevenue) || 100000;
+            const monthlySavings = document.getElementById('monthlySavings').textContent;
+            const efficiencyScore = document.getElementById('efficiencyScore').textContent;
+            
+            const body = encodeURIComponent(`Hi ${formData.name || 'there'},
+
+Thank you for completing the Shopt E-commerce Platform Assessment!
+
+YOUR RESULTS SUMMARY:
+- E-commerce Efficiency Score: ${efficiencyScore}/100
+- Potential Monthly Savings: ${monthlySavings}
+- Current Platform: ${formData.platform === 'none' ? 'Not selling online yet' : formData.platform}
+
+KEY FINDINGS:
+${formData.platform === 'none' ? 
+'✓ You have the opportunity to start with the right platform from day one' : 
+'✗ Currency volatility is impacting your costs\n✗ Missing local payment methods are costing you sales\n✗ International support is slowing your growth'}
+
+RECOMMENDED NEXT STEPS:
+1. Schedule a personalized demo with Tom to see how Shopt addresses your specific needs
+2. Get a detailed migration plan (if applicable)
+3. Take advantage of our limited-time 25% discount for the first 3 months
+
+To schedule your demo or ask questions:
+📧 Email: tom@shopt.co.za
+📱 WhatsApp: +27 76 207 2304
+🌐 Website: www.shopt.co.za
+
+Don't let international platforms hold your business back. Join successful South African businesses who've made the switch to Shopt.
+
+Best regards,
+Tom
+Shopt E-commerce Specialist
+
+P.S. This assessment is valid for 30 days. The sooner you switch, the sooner you start saving!`);
+
+            window.location.href = `mailto:${formData.email}?subject=${subject}&body=${body}`;
+            
+            // Show notification after a short delay
+            setTimeout(() => {
+                showNotification('Email client opened. Send the email to receive your report!');
+            }, 500);
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('successNotification');
+            document.getElementById('notificationText').textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function shareReport() {
+            const shareData = {
+                title: 'E-commerce Platform Assessment Results',
+                text: `I just discovered I could save ${document.getElementById('monthlySavings').textContent} monthly on e-commerce costs! Check out Shopt - a local SA platform.`,
+                url: window.location.href
+            };
+
+            if (navigator.share && /mobile/i.test(navigator.userAgent)) {
+                navigator.share(shareData)
+                    .then(() => {
+                        showNotification('Report shared successfully!');
+                    })
+                    .catch((error) => console.log('Error sharing:', error));
+            } else {
+                // Fallback - copy to clipboard
+                const shareText = `I just completed an e-commerce platform assessment and discovered I could save ${document.getElementById('monthlySavings').textContent} monthly! 
+
+My efficiency score: ${document.getElementById('efficiencyScore').textContent}/100
+
+Shopt offers:
+✓ Fixed ZAR pricing (no forex surprises)
+✓ All SA payment methods included
+✓ Local support during business hours
+✓ Complete setup - no DIY needed
+
+Contact Tom at Shopt:
+📧 tom@shopt.co.za
+📱 WhatsApp: +27 76 207 2304
+
+Get your free assessment: ${window.location.href}`;
+
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification('Report copied to clipboard! Paste it anywhere to share.');
+                }).catch(() => {
+                    prompt('Copy this text to share:', shareText);
+                });
+            }
         }
 
         function animateScore() {
