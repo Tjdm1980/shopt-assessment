@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free E-commerce Platform Assessment | Discover Hidden Costs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --secondary: #F59E0B;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --dark: #1F2937;
+            --light: #F3F4F6;
+            --white: #FFFFFF;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .whatsapp-tooltip {
+            position: absolute;
+            right: 70px;
+            bottom: 15px;
+            background: var(--dark);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            white-space: nowrap;
+            font-size: 14px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .whatsapp-float:hover .whatsapp-tooltip {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .assessment-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .assessment-header h1 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .assessment-header p {
+            font-size: 1.2rem;
+            color: #6B7280;
+        }
+
+        .trust-signals {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .trust-signal {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6B7280;
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .progress-bar {
+            background: #E5E7EB;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #6B7280;
+            font-size: 0.9rem;
+        }
+
+        .assessment-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step-header {
+            margin-bottom: 30px;
+        }
+
+        .step-header h2 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .step-header p {
+            color: #6B7280;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-option label {
+            display: block;
+            padding: 15px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option input[type="radio"]:checked + label {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-warning {
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FCD34D;
+        }
+
+        .alert-danger {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+        }
+
+        .alert-success {
+            background: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #6EE7B7;
+        }
+
+        .calculation-box {
+            background: #F9FAFB;
+            border: 2px dashed #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .calculation-box h3 {
+            color: var(--danger);
+            margin-bottom: 10px;
+        }
+
+        .calculation-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .calculation-total {
+            border-top: 2px solid #E5E7EB;
+            padding-top: 10px;
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--danger);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-secondary {
+            background: #E5E7EB;
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            background: #D1D5DB;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+        }
+
+        .score-display {
+            font-size: 5rem;
+            font-weight: 700;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .score-label {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .finding-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--danger);
+        }
+
+        .finding-card.opportunity {
+            border-top-color: var(--success);
+        }
+
+        .finding-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .finding-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--danger);
+            margin: 10px 0;
+        }
+
+        .finding-card.opportunity .finding-value {
+            color: var(--success);
+        }
+
+        .comparison-table {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: #F9FAFB;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #E5E7EB;
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .check-mark {
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+
+        .cross-mark {
+            color: var(--danger);
+            font-size: 1.2rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .offer-badge {
+            display: inline-block;
+            background: var(--secondary);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .revenue-potential {
+            font-style: italic;
+            color: var(--primary);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .assessment-header h1 {
+                font-size: 2rem;
+            }
+            
+            .assessment-card {
+                padding: 25px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            
+            .whatsapp-tooltip {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="assessment-header">
+            <h1>Discover Hidden Costs in Your E-commerce Platform</h1>
+            <p>Get a personalized report showing how much you could save</p>
+            <div class="trust-signals">
+                <div class="trust-signal">
+                    <span>✓</span> 2-minute assessment
+                </div>
+                <div class="trust-signal">
+                    <span>✓</span> No credit card required
+                </div>
+                <div class="trust-signal">
+                    <span>✓</span> Instant results
+                </div>
+                <div class="trust-signal">
+                    <span>📧</span> tom@shopt.co.za
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressText">Step 1 of 5</span> - <span id="progressLabel">Business Profile</span>
+            </div>
+        </div>
+
+        <div class="assessment-card">
+            <form id="assessmentForm">
+                <!-- Step 1: Business Profile -->
+                <div class="step active" data-step="1">
+                    <div class="step-header">
+                        <h2>Let's start with your business basics</h2>
+                        <p>This helps us calculate accurate costs and opportunities</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Which platform do you currently use?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="none" name="platform" value="none">
+                                <label for="none">Not selling online yet</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="shopify" name="platform" value="shopify">
+                                <label for="shopify">Shopify</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="woocommerce" name="platform" value="woocommerce">
+                                <label for="woocommerce">WooCommerce</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="other" name="platform" value="other">
+                                <label for="other">Other/Custom</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success" id="newSellerAlert" style="display: none;">
+                        <span>🎯</span>
+                        <span>Perfect timing! You can avoid the costly mistakes 73% of SA businesses make with international platforms. Tom can show you how to start right.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What's your monthly revenue (ZAR)?</label>
+                        <select name="monthlyRevenue" required>
+                            <option value="">Select revenue range</option>
+                            <option value="50000">Under R50,000</option>
+                            <option value="100000">R50,000 - R100,000</option>
+                            <option value="250000">R100,000 - R250,000</option>
+                            <option value="500000">R250,000 - R500,000</option>
+                            <option value="1000000">R500,000 - R1,000,000</option>
+                            <option value="2000000">Over R1,000,000</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>How many products do you sell?</label>
+                        <input type="number" name="productCount" placeholder="e.g., 150" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What's your average order value (ZAR)?</label>
+                        <input type="number" name="averageOrderValue" placeholder="e.g., 450" required>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Continue <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Hidden Costs -->
+                <div class="step" data-step="2">
+                    <div class="step-header">
+                        <h2>Let's uncover your true platform costs</h2>
+                        <p>Most businesses miss 40-60% of their actual expenses</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What's your platform's base monthly fee?</label>
+                        <div style="display: flex; gap: 10px;">
+                            <select name="currency" style="width: 100px;">
+                                <option value="USD">USD</option>
+                                <option value="ZAR">ZAR</option>
+                            </select>
+                            <input type="number" name="baseFee" placeholder="29" required style="flex: 1;">
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning" id="forexAlert" style="display: none;">
+                        <span>⚠️</span>
+                        <span>At today's rate (R18.50/$), that's <strong id="zarAmount">R537</strong> per month - and growing!</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>How much do you spend on apps/plugins monthly?</label>
+                        <input type="number" name="appCosts" placeholder="e.g., 50" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hours spent monthly on platform management/issues?</label>
+                        <input type="number" name="hoursSpent" placeholder="e.g., 20" required>
+                    </div>
+
+                    <div class="calculation-box" id="hiddenCostsBox" style="display: none;">
+                        <h3>Your Hidden Costs Revealed:</h3>
+                        <div class="calculation-item">
+                            <span>Platform base fee:</span>
+                            <span id="calcBaseFee">R0</span>
+                        </div>
+                        <div class="calculation-item">
+                            <span>Apps & plugins:</span>
+                            <span id="calcAppFees">R0</span>
+                        </div>
+                        <div class="calculation-item">
+                            <span>Time cost (@R250/hour):</span>
+                            <span id="calcTimeCost">R0</span>
+                        </div>
+                        <div class="calculation-total">
+                            <span>Real monthly cost:</span>
+                            <span id="calcTotalCost">R0</span>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                            <span>←</span> Back
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Continue <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Payment Methods -->
+                <div class="step" data-step="3">
+                    <div class="step-header">
+                        <h2>Payment methods impact your conversion rate</h2>
+                        <p>67% of SA shoppers abandon carts due to payment issues</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Which payment methods do you currently offer?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="creditCard" name="paymentMethods" value="creditCard">
+                                <label for="creditCard">Credit/Debit Cards</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="snapScan" name="paymentMethods" value="snapScan">
+                                <label for="snapScan">SnapScan</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="zapper" name="paymentMethods" value="zapper">
+                                <label for="zapper">Zapper</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="instantEft" name="paymentMethods" value="instantEft">
+                                <label for="instantEft">Instant EFT</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="mobicred" name="paymentMethods" value="mobicred">
+                                <label for="mobicred">Mobicred</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="voucher" name="paymentMethods" value="voucher">
+                                <label for="voucher">1Voucher</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-danger" id="paymentAlert" style="display: none;">
+                        <span>💸</span>
+                        <span>You're missing key payment methods! This could be costing you <strong id="lostRevenue">R0</strong> in monthly sales.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What's your current cart abandonment rate?</label>
+                        <select name="abandonmentRate" required>
+                            <option value="">Select rate</option>
+                            <option value="50">Under 50%</option>
+                            <option value="60">50-60%</option>
+                            <option value="70">60-70%</option>
+                            <option value="80">70-80%</option>
+                            <option value="90">Over 80%</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                            <span>←</span> Back
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Continue <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Support & Operations -->
+                <div class="step" data-step="4">
+                    <div class="step-header">
+                        <h2>How's your platform support experience?</h2>
+                        <p>Poor support costs more than just time</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Average support response time?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="support1" name="supportTime" value="1">
+                                <label for="support1">Under 1 hour</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="support24" name="supportTime" value="24">
+                                <label for="support24">1-24 hours</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="support48" name="supportTime" value="48">
+                                <label for="support48">Over 24 hours</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Have you needed support outside SA business hours?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="afterHoursYes" name="afterHours" value="yes">
+                                <label for="afterHoursYes">Yes, frequently</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="afterHoursSometimes" name="afterHours" value="sometimes">
+                                <label for="afterHoursSometimes">Sometimes</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="afterHoursNo" name="afterHours" value="no">
+                                <label for="afterHoursNo">Never</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Which challenges do you face? (Select all that apply)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="loadShedding" name="challenges" value="loadShedding">
+                                <label for="loadShedding">Load shedding disruptions</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="sarsCompliance" name="challenges" value="sarsCompliance">
+                                <label for="sarsCompliance">SARS compliance complexity</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="courierIntegration" name="challenges" value="courierIntegration">
+                                <label for="courierIntegration">Local courier integration</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="languageBarrier" name="challenges" value="languageBarrier">
+                                <label for="languageBarrier">Support language barriers</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                            <span>←</span> Back
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            Continue <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Contact & Growth -->
+                <div class="step" data-step="5">
+                    <div class="step-header">
+                        <h2>Almost done! Let's talk about your growth plans</h2>
+                        <p>Plus where to send your personalized report</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Expected revenue growth next 12 months?</label>
+                        <select name="growthExpectation" required>
+                            <option value="">Select growth expectation</option>
+                            <option value="0">Maintain current levels</option>
+                            <option value="25">Up to 25%</option>
+                            <option value="50">25-50%</option>
+                            <option value="100">50-100%</option>
+                            <option value="200">Over 100%</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Your email (for the detailed report)</label>
+                        <input type="email" name="email" placeholder="you@company.co.za" required>
+                        <small style="color: #6B7280; display: block; margin-top: 5px;">
+                            Tom from Shopt will personally review your results and send recommendations
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Your name</label>
+                        <input type="text" name="name" placeholder="John Smith" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Company name</label>
+                        <input type="text" name="company" placeholder="ABC Online Store" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone (optional - for urgent opportunities only)</label>
+                        <input type="tel" name="phone" placeholder="082 123 4567">
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                            <span>←</span> Back
+                        </button>
+                        <button type="submit" class="btn btn-success pulse">
+                            Get My Free Report <span>📊</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <div class="score-card">
+                    <h2 class="score-label">Your E-commerce Efficiency Score</h2>
+                    <div class="score-display" id="efficiencyScore">42</div>
+                    <p>Industry Average: 65 | Top Performers: 85+</p>
+                </div>
+
+                <div class="findings-grid">
+                    <div class="finding-card">
+                        <h3>💸 Annual Currency Loss</h3>
+                        <p>Exchange rate volatility is costing you:</p>
+                        <div class="finding-value" id="currencyLoss">R28,440</div>
+                        <p>Based on 15% annual USD appreciation</p>
+                    </div>
+
+                    <div class="finding-card opportunity">
+                        <h3>🎯 Missed Revenue</h3>
+                        <p>From payment method limitations:</p>
+                        <div class="finding-value" id="missedRevenue">R180,000</div>
+                        <p>Annually from cart abandonment</p>
+                    </div>
+
+                    <div class="finding-card">
+                        <h3>⏰ Time Costs</h3>
+                        <p>Platform management overhead:</p>
+                        <div class="finding-value" id="timeCosts">R60,000</div>
+                        <p>Annual value of wasted time</p>
+                    </div>
+
+                    <div class="finding-card">
+                        <h3>📈 Growth Tax</h3>
+                        <p>As you scale, costs increase by:</p>
+                        <div class="finding-value" id="growthTax">R4,800</div>
+                        <p>Additional monthly at target revenue</p>
+                    </div>
+                </div>
+
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature/Benefit</th>
+                                <th>Your Current Platform</th>
+                                <th>Local Solution (Shopt)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Monthly Cost Predictability</td>
+                                <td><span class="cross-mark">✗</span> Subject to forex</td>
+                                <td><span class="check-mark">✓</span> Fixed ZAR pricing</td>
+                            </tr>
+                            <tr>
+                                <td>Local Payment Methods</td>
+                                <td><span class="cross-mark">✗</span> Limited options</td>
+                                <td><span class="check-mark">✓</span> All SA methods included</td>
+                            </tr>
+                            <tr>
+                                <td>Support Availability</td>
+                                <td><span class="cross-mark">✗</span> US timezone</td>
+                                <td><span class="check-mark">✓</span> SA business hours</td>
+                            </tr>
+                            <tr>
+                                <td>Setup Assistance</td>
+                                <td><span class="cross-mark">✗</span> DIY required</td>
+                                <td><span class="check-mark">✓</span> Complete setup included</td>
+                            </tr>
+                            <tr>
+                                <td>Local Compliance</td>
+                                <td><span class="cross-mark">✗</span> Manual configuration</td>
+                                <td><span class="check-mark">✓</span> Built-in SARS compliance</td>
+                            </tr>
+                            <tr>
+                                <td>True Monthly Cost</td>
+                                <td id="currentCost">R3,287</td>
+                                <td id="shoptCost">R1,299</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="cta-section">
+                    <span class="offer-badge">Limited Time: 25% Off First 3 Months</span>
+                    <h2>Ready to save <span id="monthlySavings">R1,988</span> monthly?</h2>
+                    <p>Join successful SA businesses who've already made the switch to Shopt</p>
+                    <a href="#" class="btn btn-success pulse" onclick="bookDemo()">
+                        Book Your Free Demo Now <span>🚀</span>
+                    </a>
+                    <p style="font-size: 0.9rem; margin-top: 20px; opacity: 0.8;">
+                        ✓ No credit card required ✓ Free migration assistance ✓ 30-day money-back guarantee
+                    </p>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">
+                        Questions? Email <a href="mailto:tom@shopt.co.za" style="color: white; text-decoration: underline;">tom@shopt.co.za</a> or WhatsApp us
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/27762072304?text=Hi%20Tom%2C%20I%20just%20completed%20the%20e-commerce%20assessment%20and%20would%20like%20to%20learn%20more%20about%20Shopt" 
+       target="_blank" 
+       class="whatsapp-float">
+        <span>💬</span>
+        <span class="whatsapp-tooltip">Need help? Chat with Tom on WhatsApp</span>
+    </a>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+        const formData = {};
+        const exchangeRate = 18.50; // Current USD/ZAR rate
+
+        const stepLabels = {
+            1: 'Business Profile',
+            2: 'Hidden Costs',
+            3: 'Payment Methods',
+            4: 'Support & Operations',
+            5: 'Contact & Growth'
+        };
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Step ${currentStep} of ${totalSteps}`;
+            document.getElementById('progressLabel').textContent = stepLabels[currentStep];
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`[data-step="${step}"]`).classList.add('active');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextStep() {
+            if (validateStep(currentStep)) {
+                saveStepData(currentStep);
+                
+                // Show alert for new sellers
+                if (currentStep === 1 && formData.platform === 'none') {
+                    document.getElementById('newSellerAlert').style.display = 'flex';
+                }
+                
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    
+                    // Skip certain steps for new sellers
+                    if (formData.platform === 'none' && currentStep === 2) {
+                        // Modify step 2 for new sellers
+                        modifyStepForNewSellers();
+                    }
+                    
+                    showStep(currentStep);
+                    
+                    // Dynamic calculations
+                    if (currentStep === 2) {
+                        handleCurrencyCalculation();
+                    } else if (currentStep === 3) {
+                        calculatePaymentLoss();
+                    }
+                }
+            }
+        }
+
+        function modifyStepForNewSellers() {
+            const step2Header = document.querySelector('[data-step="2"] .step-header h2');
+            const step2Desc = document.querySelector('[data-step="2"] .step-header p');
+            
+            step2Header.textContent = "Let's explore what you'd pay with international platforms";
+            step2Desc.textContent = "See the hidden costs before you commit to the wrong solution";
+            
+            // Update label for platform fee
+            const feeLabel = document.querySelector('[data-step="2"] label');
+            feeLabel.textContent = "What international platforms like Shopify charge monthly:";
+            
+            // Pre-fill with Shopify Basic pricing
+            document.querySelector('[name="baseFee"]').value = "29";
+            document.querySelector('[name="currency"]').value = "USD";
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function validateStep(step) {
+            const currentStepElement = document.querySelector(`[data-step="${step}"]`);
+            const requiredFields = currentStepElement.querySelectorAll('[required]');
+            let valid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    field.style.borderColor = '#EF4444';
+                    valid = false;
+                } else {
+                    field.style.borderColor = '#E5E7EB';
+                }
+            });
+
+            // Special validation for radio groups
+            const radioGroups = currentStepElement.querySelectorAll('.radio-group');
+            radioGroups.forEach(group => {
+                const radioName = group.querySelector('input[type="radio"]')?.name;
+                if (radioName && !document.querySelector(`input[name="${radioName}"]:checked`)) {
+                    group.style.border = '2px solid #EF4444';
+                    group.style.borderRadius = '8px';
+                    valid = false;
+                } else {
+                    group.style.border = 'none';
+                }
+            });
+
+            return valid;
+        }
+
+        function saveStepData(step) {
+            const currentStepElement = document.querySelector(`[data-step="${step}"]`);
+            const inputs = currentStepElement.querySelectorAll('input, select, textarea');
+            
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    if (!formData[input.name]) formData[input.name] = [];
+                    if (input.checked) formData[input.name].push(input.value);
+                } else if (input.type === 'radio') {
+                    if (input.checked) formData[input.name] = input.value;
+                } else {
+                    formData[input.name] = input.value;
+                }
+            });
+        }
+
+        function handleCurrencyCalculation() {
+            const currency = document.querySelector('[name="currency"]').value;
+            const baseFee = document.querySelector('[name="baseFee"]').value;
+            
+            if (currency === 'USD' && baseFee) {
+                const zarAmount = baseFee * exchangeRate;
+                document.getElementById('forexAlert').style.display = 'flex';
+                document.getElementById('zarAmount').textContent = `R${zarAmount.toFixed(0)}`;
+            }
+
+            // Calculate hidden costs
+            document.querySelector('[name="hoursSpent"]').addEventListener('input', calculateHiddenCosts);
+            document.querySelector('[name="appCosts"]').addEventListener('input', calculateHiddenCosts);
+            calculateHiddenCosts();
+        }
+
+        function calculateHiddenCosts() {
+            const baseFee = parseFloat(document.querySelector('[name="baseFee"]').value) || 0;
+            const currency = document.querySelector('[name="currency"]').value;
+            const appCosts = parseFloat(document.querySelector('[name="appCosts"]').value) || 0;
+            const hoursSpent = parseFloat(document.querySelector('[name="hoursSpent"]').value) || 0;
+            
+            const baseFeeZAR = currency === 'USD' ? baseFee * exchangeRate : baseFee;
+            const appCostsZAR = currency === 'USD' ? appCosts * exchangeRate : appCosts;
+            const timeCost = hoursSpent * 250; // R250/hour average
+            
+            const totalCost = baseFeeZAR + appCostsZAR + timeCost;
+            
+            if (totalCost > 0) {
+                document.getElementById('hiddenCostsBox').style.display = 'block';
+                document.getElementById('calcBaseFee').textContent = `R${baseFeeZAR.toFixed(0)}`;
+                document.getElementById('calcAppFees').textContent = `R${appCostsZAR.toFixed(0)}`;
+                document.getElementById('calcTimeCost').textContent = `R${timeCost.toFixed(0)}`;
+                document.getElementById('calcTotalCost').textContent = `R${totalCost.toFixed(0)}`;
+            }
+        }
+
+        function calculatePaymentLoss() {
+            const paymentMethods = document.querySelectorAll('[name="paymentMethods"]:checked');
+            const monthlyRevenue = parseFloat(formData.monthlyRevenue) || 100000;
+            
+            let missingMethods = 0;
+            const importantMethods = ['snapScan', 'zapper', 'instantEft'];
+            
+            importantMethods.forEach(method => {
+                if (!Array.from(paymentMethods).some(pm => pm.value === method)) {
+                    missingMethods++;
+                }
+            });
+            
+            if (missingMethods > 0) {
+                const lostRevenue = monthlyRevenue * 0.15 * (missingMethods / 3);
+                document.getElementById('paymentAlert').style.display = 'flex';
+                document.getElementById('lostRevenue').textContent = `R${lostRevenue.toFixed(0)}`;
+            }
+        }
+
+        // Form submission
+        document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateStep(currentStep)) {
+                saveStepData(currentStep);
+                calculateResults();
+                showResults();
+            }
+        });
+
+        function calculateResults() {
+            const isNewSeller = formData.platform === 'none';
+            
+            // Calculate efficiency score (lower is worse)
+            let score = isNewSeller ? 85 : 100; // New sellers start with good score
+            
+            // Platform penalty
+            if (formData.platform === 'shopify') score -= 20;
+            else if (formData.platform === 'woocommerce') score -= 15;
+            
+            // Currency penalty
+            if (formData.currency === 'USD' && !isNewSeller) score -= 15;
+            
+            // Payment methods penalty
+            const paymentMethodCount = (formData.paymentMethods || []).length;
+            if (paymentMethodCount < 3) score -= 20;
+            else if (paymentMethodCount < 5) score -= 10;
+            
+            // Support penalty
+            if (formData.supportTime > 24) score -= 10;
+            if (formData.afterHours === 'yes') score -= 10;
+            
+            // Challenges penalty
+            const challengeCount = (formData.challenges || []).length;
+            score -= challengeCount * 5;
+            
+            document.getElementById('efficiencyScore').textContent = Math.max(score, 25);
+            
+            // Update messaging for new sellers
+            if (isNewSeller) {
+                document.querySelector('.score-label').textContent = "Your Smart Start Score";
+                document.querySelector('.score-card p').textContent = "You're avoiding the mistakes 73% of SA businesses make!";
+                
+                // Update finding cards
+                document.querySelector('.finding-card h3').innerHTML = "💰 Annual Savings vs Shopify";
+                document.querySelector('.finding-card p').innerHTML = "By choosing local from the start:";
+                
+                const secondCard = document.querySelectorAll('.finding-card')[1];
+                secondCard.querySelector('h3').innerHTML = "🚀 Revenue Advantage";
+                secondCard.querySelector('p').innerHTML = "With proper payment methods from day one:";
+            }
+            
+            // Calculate losses and opportunities
+            const monthlyRevenue = parseFloat(formData.monthlyRevenue) || 100000;
+            const baseFee = isNewSeller ? 29 : parseFloat(formData.baseFee) || 29;
+            const currency = isNewSeller ? 'USD' : formData.currency || 'USD';
+            
+            // Currency loss
+            const annualCurrencyLoss = currency === 'USD' ? baseFee * exchangeRate * 12 * 0.15 : 0;
+            document.getElementById('currencyLoss').textContent = `R${annualCurrencyLoss.toFixed(0)}`;
+            
+            // Missed revenue
+            const missedMonthly = monthlyRevenue * 0.15; // 15% potential increase
+            document.getElementById('missedRevenue').textContent = `R${(missedMonthly * 12).toFixed(0)}`;
+            
+            // Time costs
+            const hoursSpent = parseFloat(formData.hoursSpent) || 20;
+            const annualTimeCost = hoursSpent * 250 * 12;
+            document.getElementById('timeCosts').textContent = `R${annualTimeCost.toFixed(0)}`;
+            
+            // Growth tax
+            const growthRate = parseFloat(formData.growthExpectation) / 100 || 0.25;
+            const futureRevenue = monthlyRevenue * (1 + growthRate);
+            const growthTax = futureRevenue * 0.029; // Platform percentage fees
+            document.getElementById('growthTax').textContent = `R${growthTax.toFixed(0)}`;
+            
+            // Cost comparison
+            const currentTotalCost = calculateTotalCurrentCost();
+            document.getElementById('currentCost').textContent = isNewSeller ? 
+                `R${(29 * exchangeRate).toFixed(0)} (Shopify)` : 
+                `R${currentTotalCost.toFixed(0)}`;
+            
+            // Shopt cost recommendation based on revenue
+            let shoptPackage = 'R699'; // Entry
+            if (monthlyRevenue > 100000) shoptPackage = 'R1,299'; // Essentials
+            if (monthlyRevenue > 500000) shoptPackage = 'R1,999'; // Everyone
+            if (monthlyRevenue > 1000000) shoptPackage = 'R2,999'; // Enterprise
+            
+            document.getElementById('shoptCost').textContent = shoptPackage;
+            
+            // Monthly savings
+            const shoptCost = parseInt(shoptPackage.replace(/[R,]/g, ''));
+            const monthlySavings = currentTotalCost - shoptCost;
+            document.getElementById('monthlySavings').textContent = `R${monthlySavings.toFixed(0)}`;
+            
+            // Update CTA for new sellers
+            if (isNewSeller) {
+                document.querySelector('.cta-section h2').innerHTML = 
+                    `Start smart and save <span id="monthlySavings">R${monthlySavings.toFixed(0)}</span> monthly from day one`;
+                document.querySelector('.cta-section p').innerHTML = 
+                    "Join successful SA businesses who chose the right platform from the start";
+            }
+        }
+
+        function calculateTotalCurrentCost() {
+            const baseFee = parseFloat(formData.baseFee) || 29;
+            const currency = formData.currency || 'USD';
+            const appCosts = parseFloat(formData.appCosts) || 0;
+            const hoursSpent = parseFloat(formData.hoursSpent) || 20;
+            
+            const baseFeeZAR = currency === 'USD' ? baseFee * exchangeRate : baseFee;
+            const appCostsZAR = currency === 'USD' ? appCosts * exchangeRate : appCosts;
+            const timeCost = hoursSpent * 250;
+            
+            return baseFeeZAR + appCostsZAR + timeCost;
+        }
+
+        function showResults() {
+            document.getElementById('assessmentForm').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            document.querySelector('.progress-container').style.display = 'none';
+            
+            // Animate score
+            animateScore();
+            
+            // Track completion
+            console.log('Assessment completed:', formData);
+        }
+
+        function animateScore() {
+            const scoreElement = document.getElementById('efficiencyScore');
+            const targetScore = parseInt(scoreElement.textContent);
+            let currentScore = 0;
+            
+            const interval = setInterval(() => {
+                currentScore += 2;
+                if (currentScore >= targetScore) {
+                    currentScore = targetScore;
+                    clearInterval(interval);
+                }
+                scoreElement.textContent = currentScore;
+            }, 30);
+        }
+
+        function bookDemo() {
+            // In production, this would trigger calendly or similar
+            const message = `Thank you for your interest in Shopt!\n\nWe'll send your detailed assessment report to ${formData.email}.\n\nFor immediate assistance:\n📧 Email: tom@shopt.co.za\n📱 WhatsApp: +27 76 207 2304\n\nWe'll be in touch within 24 hours to schedule your personalized demo.`;
+            
+            alert(message);
+            
+            // Send data to backend
+            console.log('Sending lead data:', formData);
+            
+            // Redirect to WhatsApp for immediate contact
+            if (confirm('Would you like to chat with Tom on WhatsApp right now?')) {
+                window.open(`https://wa.me/27762072304?text=Hi%20Tom%2C%20I%20just%20completed%20the%20assessment%20(${formData.email})%20and%20would%20like%20to%20schedule%20a%20demo`, '_blank');
+            }
+        }
+
+        // Currency field listener
+        document.addEventListener('DOMContentLoaded', function() {
+            const currencySelect = document.querySelector('[name="currency"]');
+            if (currencySelect) {
+                currencySelect.addEventListener('change', handleCurrencyCalculation);
+            }
+            
+            // Platform selection listener
+            const platformRadios = document.querySelectorAll('[name="platform"]');
+            platformRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const revenueLabel = document.querySelector('[name="monthlyRevenue"]').parentElement.querySelector('label');
+                    const productLabel = document.querySelector('[name="productCount"]').parentElement.querySelector('label');
+                    
+                    if (this.value === 'none') {
+                        document.getElementById('newSellerAlert').style.display = 'flex';
+                        revenueLabel.textContent = "What's your expected monthly revenue once online?";
+                        productLabel.textContent = "How many products do you plan to sell?";
+                    } else {
+                        document.getElementById('newSellerAlert').style.display = 'none';
+                        revenueLabel.textContent = "What's your monthly revenue (ZAR)?";
+                        productLabel.textContent = "How many products do you sell?";
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
