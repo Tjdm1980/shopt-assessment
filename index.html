@@ -1843,6 +1843,32 @@ Get your free assessment: ${window.location.href}`;
                     }
                 });
             });
+            
+            // TEMPORARY: Add test button to skip to results
+            if (window.location.href.includes('test=true')) {
+                const testBtn = document.createElement('button');
+                testBtn.textContent = 'Skip to Results (Testing)';
+                testBtn.className = 'btn btn-warning';
+                testBtn.style.position = 'fixed';
+                testBtn.style.top = '10px';
+                testBtn.style.right = '10px';
+                testBtn.style.zIndex = '9999';
+                testBtn.onclick = function() {
+                    // Set dummy data
+                    formData.name = 'Test User';
+                    formData.email = 'test@example.com';
+                    formData.company = 'Test Company';
+                    formData.platform = 'shopify';
+                    formData.monthlyRevenue = '250000';
+                    formData.baseFee = '29';
+                    formData.currency = 'USD';
+                    formData.hoursSpent = '20';
+                    
+                    calculateResults();
+                    showResults();
+                };
+                document.body.appendChild(testBtn);
+            }
         });
     </script>
 </body>
