@@ -528,6 +528,16 @@
             z-index: 1001;
         }
 
+        .platform-cost-info {
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #4C1D95;
+        }
+
         @keyframes slideIn {
             from {
                 transform: translateX(100%);
@@ -903,6 +913,14 @@
                         <input type="number" name="averageOrderValue" placeholder="e.g., 450" required>
                     </div>
 
+                    <div class="form-group">
+                        <label>Current USD/ZAR Exchange Rate</label>
+                        <input type="number" step="0.01" name="exchangeRateInput" id="exchangeRateInput" value="18.00" min="10" max="30">
+                        <small style="color: #6B7280; display: block; margin-top: 5px;">
+                            Adjust if needed - affects cost calculations for international platforms
+                        </small>
+                    </div>
+
                     <div class="button-group">
                         <button type="button" class="btn btn-primary" onclick="nextStep()">
                             Continue <span>→</span>
@@ -926,11 +944,15 @@
                             </select>
                             <input type="number" name="baseFee" placeholder="29" required style="flex: 1;">
                         </div>
+                        <div class="platform-cost-info" id="platformCostInfo" style="display: none;">
+                            <strong>Platform-specific costs:</strong>
+                            <div id="platformSpecificCosts"></div>
+                        </div>
                     </div>
 
                     <div class="alert alert-warning" id="forexAlert" style="display: none;">
                         <span>⚠️</span>
-                        <span>At today's rate (R18.50/$), that's <strong id="zarAmount">R537</strong> per month - and growing!</span>
+                        <span>At the current rate (R<span id="currentRate">18.00</span>/$), that's <strong id="zarAmount">R537</strong> per month - and growing!</span>
                     </div>
 
                     <div class="form-group">
@@ -948,6 +970,10 @@
                         <div class="calculation-item">
                             <span>Platform base fee:</span>
                             <span id="calcBaseFee">R0</span>
+                        </div>
+                        <div class="calculation-item">
+                            <span>Transaction fees (est.):</span>
+                            <span id="calcTransactionFees">R0</span>
                         </div>
                         <div class="calculation-item">
                             <span>Apps & plugins:</span>
@@ -1344,7 +1370,8 @@
         let currentStep = 1;
         const totalSteps = 5;
         const formData = {};
-        const exchangeRate = 18.50; // Current USD/ZAR rate
+        let exchangeRate = 18.00; // Current USD/ZAR rate - user adjustable
+        let debounceTimer;
 
         const stepLabels = {
             1: 'Business Profile',
@@ -1352,6 +1379,54 @@
             3: 'Payment Methods',
             4: 'Support & Operations',
             5: 'Contact & Growth'
+        };
+
+        // Platform-specific cost data based on actual SA market research
+        const platformCosts = {
+            shopify: {
+                small: { // 0-100 orders
+                    baseFee: 430, // Basic plan in ZAR
+                    appCosts: 690, // Higher end of R345-R690 for essential apps
+                    totalMax: 1120,
+                    name: 'Basic'
+                },
+                medium: { // 100-1,000 orders
+                    baseFee: 1200, // Shopify plan in ZAR
+                    appCosts: 1380, // Higher estimate for apps
+                    totalMax: 2580,
+                    name: 'Shopify'
+                },
+                enterprise: { // 1,000+ orders
+                    baseFee: 5175, // Advanced plan in ZAR
+                    appCosts: 2760, // Higher estimate for enterprise apps
+                    totalMax: 7935,
+                    name: 'Advanced'
+                },
+                transactionFees: 0.032, // 3.2% as per PayFast/Peach Payments
+                perTransactionFee: 2 // R2 per transaction
+            },
+            woocommerce: {
+                small: { // 0-100 orders
+                    hosting: 299, // Higher end R115-R299
+                    maintenance: 1150, // Higher end R575-R1,150
+                    plugins: 575, // Higher end R145-R575
+                    totalMax: 2279
+                },
+                medium: { // 100-1,000 orders
+                    hosting: 690, // Higher end R345-R690
+                    maintenance: 2300, // Higher end R1,150-R2,300
+                    plugins: 1175, // Increased plugin needs
+                    totalMax: 4165
+                },
+                enterprise: { // 1,000+ orders
+                    hosting: 2875, // Enterprise hosting
+                    maintenance: 9200, // Enterprise maintenance
+                    plugins: 5504, // Enterprise plugin suite
+                    totalMax: 17579
+                },
+                transactionFees: 0.032, // 3.2% as per PayFast/Peach Payments
+                perTransactionFee: 2 // R2 per transaction
+            }
         };
 
         function updateProgress() {
@@ -1391,6 +1466,7 @@
                     // Dynamic calculations
                     if (currentStep === 2) {
                         handleCurrencyCalculation();
+                        showPlatformSpecificInfo();
                     } else if (currentStep === 3) {
                         calculatePaymentLoss();
                     }
@@ -1465,6 +1541,67 @@
                     formData[input.name] = input.value;
                 }
             });
+            
+            // Update exchange rate if we're on step 1
+            if (step === 1) {
+                const rateInput = document.getElementById('exchangeRateInput');
+                if (rateInput && rateInput.value) {
+                    exchangeRate = parseFloat(rateInput.value);
+                }
+            }
+        }
+
+        function showPlatformSpecificInfo() {
+            const platform = formData.platform;
+            const infoDiv = document.getElementById('platformCostInfo');
+            const costsDiv = document.getElementById('platformSpecificCosts');
+            const monthlyRevenue = parseFloat(formData.monthlyRevenue) || 100000;
+            const avgOrderValue = parseFloat(formData.averageOrderValue) || 450;
+            const monthlyOrders = monthlyRevenue / avgOrderValue;
+            
+            if (platform === 'shopify') {
+                infoDiv.style.display = 'block';
+                costsDiv.innerHTML = `
+                    <p>• Small (0-100 orders): R775-R1,120/month (Basic R430 + apps R345-R690)</p>
+                    <p>• Medium (100-1,000 orders): R1,890-R2,580/month (Shopify R1,200 + apps)</p>
+                    <p>• Enterprise (1,000+ orders): R6,555-R7,935/month (Advanced R5,175 + apps)</p>
+                    <p>• Transaction fees: 3.2% + R2 per order (PayFast/Peach Payments)</p>
+                    <p style="margin-top: 10px; font-style: italic;">Based on ${Math.round(monthlyOrders)} monthly orders, we're showing ${monthlyOrders < 100 ? 'small business' : monthlyOrders < 1000 ? 'medium business' : 'enterprise'} costs.</p>
+                `;
+                
+                // Auto-populate with higher estimate based on order volume
+                if (!formData.baseFee || formData.baseFee === '29') { // Only if not already customized
+                    const tier = monthlyOrders < 100 ? 'small' : monthlyOrders < 1000 ? 'medium' : 'enterprise';
+                    document.querySelector('[name="baseFee"]').value = platformCosts.shopify[tier].baseFee;
+                    document.querySelector('[name="appCosts"]').value = platformCosts.shopify[tier].appCosts;
+                    document.querySelector('[name="currency"]').value = 'ZAR';
+                    handleCurrencyCalculation();
+                }
+            } else if (platform === 'woocommerce') {
+                infoDiv.style.display = 'block';
+                costsDiv.innerHTML = `
+                    <p>• Small (0-100 orders): R898-R2,279/month</p>
+                    <p>&nbsp;&nbsp;- Hosting: R115-R299, Maintenance: R575-R1,150, Plugins: R145-R575</p>
+                    <p>• Medium (100-1,000 orders): R1,848-R4,165/month</p>
+                    <p>&nbsp;&nbsp;- Hosting: R345-R690, Maintenance: R1,150-R2,300, Plugins: increased</p>
+                    <p>• Enterprise (1,000+ orders): R4,255-R17,579/month</p>
+                    <p>• Transaction fees: 3.2% + R2 per order (PayFast/Peach Payments)</p>
+                    <p style="margin-top: 10px; font-style: italic;">Based on ${Math.round(monthlyOrders)} monthly orders, we're showing ${monthlyOrders < 100 ? 'small business' : monthlyOrders < 1000 ? 'medium business' : 'enterprise'} costs.</p>
+                `;
+                
+                // Auto-populate with higher estimate for WooCommerce
+                if (!formData.baseFee) { // Only if not already customized
+                    const tier = monthlyOrders < 100 ? 'small' : monthlyOrders < 1000 ? 'medium' : 'enterprise';
+                    const wooData = platformCosts.woocommerce[tier];
+                    // For WooCommerce, combine hosting + maintenance as "base fee"
+                    document.querySelector('[name="baseFee"]').value = wooData.hosting + wooData.maintenance;
+                    document.querySelector('[name="appCosts"]').value = wooData.plugins;
+                    document.querySelector('[name="currency"]').value = 'ZAR';
+                    handleCurrencyCalculation();
+                }
+            } else {
+                infoDiv.style.display = 'none';
+            }
         }
 
         function handleCurrencyCalculation() {
@@ -1475,12 +1612,39 @@
                 const zarAmount = baseFee * exchangeRate;
                 document.getElementById('forexAlert').style.display = 'flex';
                 document.getElementById('zarAmount').textContent = `R${zarAmount.toFixed(0)}`;
+                document.getElementById('currentRate').textContent = exchangeRate.toFixed(2);
             }
 
+            // Add auto-refresh listeners
+            setupAutoRefresh();
+            
             // Calculate hidden costs
-            document.querySelector('[name="hoursSpent"]').addEventListener('input', calculateHiddenCosts);
-            document.querySelector('[name="appCosts"]').addEventListener('input', calculateHiddenCosts);
             calculateHiddenCosts();
+        }
+
+        function setupAutoRefresh() {
+            const inputs = ['baseFee', 'appCosts', 'hoursSpent'];
+            inputs.forEach(inputName => {
+                const input = document.querySelector(`[name="${inputName}"]`);
+                if (input) {
+                    input.addEventListener('input', function() {
+                        clearTimeout(debounceTimer);
+                        debounceTimer = setTimeout(() => {
+                            saveStepData(2); // Save current data
+                            calculateHiddenCosts();
+                        }, 300); // 300ms debounce
+                    });
+                }
+            });
+
+            // Currency change listener
+            const currencySelect = document.querySelector('[name="currency"]');
+            if (currencySelect) {
+                currencySelect.addEventListener('change', function() {
+                    saveStepData(2);
+                    handleCurrencyCalculation();
+                });
+            }
         }
 
         function calculateHiddenCosts() {
@@ -1488,16 +1652,34 @@
             const currency = document.querySelector('[name="currency"]').value;
             const appCosts = parseFloat(document.querySelector('[name="appCosts"]').value) || 0;
             const hoursSpent = parseFloat(document.querySelector('[name="hoursSpent"]').value) || 0;
+            const monthlyRevenue = parseFloat(formData.monthlyRevenue) || 100000;
+            const platform = formData.platform;
+            const avgOrderValue = parseFloat(formData.averageOrderValue) || 450;
+            const monthlyOrders = monthlyRevenue / avgOrderValue;
             
+            // Base fee in ZAR
             const baseFeeZAR = currency === 'USD' ? baseFee * exchangeRate : baseFee;
             const appCostsZAR = currency === 'USD' ? appCosts * exchangeRate : appCosts;
+            
+            // Calculate transaction fees based on platform using actual SA rates
+            let transactionFees = 0;
+            
+            if (platform === 'shopify' || platform === 'woocommerce') {
+                // Both platforms use same payment gateway rates in SA: 3.2% + R2
+                transactionFees = (monthlyRevenue * 0.032) + (monthlyOrders * 2);
+            } else if (platform === 'other') {
+                // Estimate same payment gateway fees
+                transactionFees = (monthlyRevenue * 0.032) + (monthlyOrders * 2);
+            }
+            
             const timeCost = hoursSpent * 250; // R250/hour average
             
-            const totalCost = baseFeeZAR + appCostsZAR + timeCost;
+            const totalCost = baseFeeZAR + appCostsZAR + transactionFees + timeCost;
             
             if (totalCost > 0) {
                 document.getElementById('hiddenCostsBox').style.display = 'block';
                 document.getElementById('calcBaseFee').textContent = `R${baseFeeZAR.toFixed(0)}`;
+                document.getElementById('calcTransactionFees').textContent = `R${transactionFees.toFixed(0)}`;
                 document.getElementById('calcAppFees').textContent = `R${appCostsZAR.toFixed(0)}`;
                 document.getElementById('calcTimeCost').textContent = `R${timeCost.toFixed(0)}`;
                 document.getElementById('calcTotalCost').textContent = `R${totalCost.toFixed(0)}`;
@@ -1634,12 +1816,38 @@
             const currency = formData.currency || 'USD';
             const appCosts = parseFloat(formData.appCosts) || 0;
             const hoursSpent = parseFloat(formData.hoursSpent) || 20;
+            const monthlyRevenue = parseFloat(formData.monthlyRevenue) || 100000;
+            const platform = formData.platform;
+            const avgOrderValue = parseFloat(formData.averageOrderValue) || 450;
+            const monthlyOrders = monthlyRevenue / avgOrderValue;
             
             const baseFeeZAR = currency === 'USD' ? baseFee * exchangeRate : baseFee;
             const appCostsZAR = currency === 'USD' ? appCosts * exchangeRate : appCosts;
+            
+            // Calculate transaction fees using SA payment gateway rates
+            let transactionFees = 0;
+            
+            if (platform === 'shopify' || platform === 'woocommerce' || platform === 'other') {
+                // All platforms in SA use similar payment gateway rates: 3.2% + R2 per transaction
+                transactionFees = (monthlyRevenue * 0.032) + (monthlyOrders * 2);
+            }
+            
+            // If user hasn't entered custom values, use tier-based defaults
+            if (!formData.baseFee && (platform === 'shopify' || platform === 'woocommerce')) {
+                const tier = monthlyOrders < 100 ? 'small' : monthlyOrders < 1000 ? 'medium' : 'enterprise';
+                
+                if (platform === 'shopify') {
+                    const shopifyData = platformCosts.shopify[tier];
+                    return shopifyData.totalMax + transactionFees + (hoursSpent * 250);
+                } else if (platform === 'woocommerce') {
+                    const wooData = platformCosts.woocommerce[tier];
+                    return wooData.totalMax + transactionFees + (hoursSpent * 250);
+                }
+            }
+            
             const timeCost = hoursSpent * 250;
             
-            return baseFeeZAR + appCostsZAR + timeCost;
+            return baseFeeZAR + appCostsZAR + transactionFees + timeCost;
         }
 
         function showResults() {
@@ -1720,7 +1928,7 @@ RECOMMENDED NEXT STEPS:
 3. Take advantage of our limited-time 25% discount for the first 3 months
 
 To schedule your demo or ask questions:
-📧 Email: tom@shopt.co.za
+📧 Email: tom@shopt-sales.co.za
 📱 WhatsApp: +27 76 207 2304
 🌐 Website: www.shopt.co.za
 
@@ -1776,7 +1984,7 @@ Shopt offers:
 ✓ Complete setup - no DIY needed
 
 Contact Tom at Shopt:
-📧 tom@shopt.co.za
+📧 tom@shopt-sales.co.za
 📱 WhatsApp: +27 76 207 2304
 
 Get your free assessment: ${window.location.href}`;
@@ -1826,6 +2034,21 @@ Get your free assessment: ${window.location.href}`;
                 currencySelect.addEventListener('change', handleCurrencyCalculation);
             }
             
+            // Exchange rate input listener
+            const exchangeRateInput = document.getElementById('exchangeRateInput');
+            if (exchangeRateInput) {
+                exchangeRateInput.addEventListener('input', function() {
+                    const newRate = parseFloat(this.value);
+                    if (newRate && newRate >= 10 && newRate <= 30) {
+                        exchangeRate = newRate;
+                        // Update any visible calculations if on step 2
+                        if (currentStep === 2) {
+                            handleCurrencyCalculation();
+                        }
+                    }
+                });
+            }
+            
             // Platform selection listener
             const platformRadios = document.querySelectorAll('[name="platform"]');
             platformRadios.forEach(radio => {
@@ -1841,6 +2064,17 @@ Get your free assessment: ${window.location.href}`;
                         document.getElementById('newSellerAlert').style.display = 'none';
                         revenueLabel.textContent = "What's your monthly revenue (ZAR)?";
                         productLabel.textContent = "How many products do you sell?";
+                    }
+                });
+            });
+            
+            // Payment method change listeners for real-time calculation
+            const paymentCheckboxes = document.querySelectorAll('[name="paymentMethods"]');
+            paymentCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (currentStep === 3) {
+                        saveStepData(3);
+                        calculatePaymentLoss();
                     }
                 });
             });
@@ -1864,6 +2098,14 @@ Get your free assessment: ${window.location.href}`;
                     formData.baseFee = '29';
                     formData.currency = 'USD';
                     formData.hoursSpent = '20';
+                    formData.averageOrderValue = '450';
+                    formData.productCount = '150';
+                    formData.paymentMethods = ['creditCard'];
+                    formData.abandonmentRate = '70';
+                    formData.supportTime = '24';
+                    formData.afterHours = 'sometimes';
+                    formData.challenges = ['loadShedding', 'sarsCompliance'];
+                    formData.growthExpectation = '50';
                     
                     calculateResults();
                     showResults();
