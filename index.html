@@ -32,50 +32,6 @@
             line-height: 1.6;
         }
 
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #25D366;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            text-decoration: none;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-        }
-
-        .whatsapp-tooltip {
-            position: absolute;
-            right: 70px;
-            bottom: 15px;
-            background: var(--dark);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            white-space: nowrap;
-            font-size: 14px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .whatsapp-float:hover .whatsapp-tooltip {
-            opacity: 1;
-        }
-
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -631,7 +587,6 @@
             .assessment-header,
             .progress-container,
             .assessment-card form,
-            .whatsapp-float,
             .report-actions,
             .success-notification {
                 display: none !important;
@@ -806,16 +761,6 @@
                 justify-content: center;
             }
             
-            .whatsapp-float {
-                width: 50px;
-                height: 50px;
-                font-size: 24px;
-            }
-            
-            .whatsapp-tooltip {
-                display: none;
-            }
-            
             .success-notification {
                 right: 10px;
                 left: 10px;
@@ -841,6 +786,9 @@
                 </div>
                 <div class="trust-signal">
                     <span>📧</span> tom@shopt-sales.co.za
+                </div>
+                <div class="trust-signal">
+                    <span>📞</span> +27 21 014 0117 ext. 104
                 </div>
             </div>
         </div>
@@ -1203,7 +1151,7 @@
                         <p><strong>Your Shopt Contact:</strong></p>
                         <p>Tom - E-commerce Specialist</p>
                         <p>📧 Email: tom@shopt-sales.co.za</p>
-                        <p>📱 WhatsApp: +27 76 207 2304</p>
+                        <p>📞 Call Direct: +27 21 014 0117 ext. 104</p>
                         <p>🌐 Website: www.shopt.co.za</p>
                     </div>
                 </div>
@@ -1312,8 +1260,7 @@
                         ✓ No credit card required ✓ Free migration assistance ✓ 30-day money-back guarantee
                     </p>
                     <p style="font-size: 0.9rem; margin-top: 10px;">
-                        Questions? Email <a href="mailto:tom@shopt-sales.co.za" style="color: white; text-decoration: underline;">tom@shopt-sales.co.za</a> or WhatsApp us 
-
+                        Questions? Email <a href="mailto:tom@shopt-sales.co.za" style="color: white; text-decoration: underline;">tom@shopt-sales.co.za</a> or call direct: +27 21 014 0117 ext. 104
                     </p>
                 </div>
 
@@ -1342,7 +1289,7 @@
                     
                     <p style="margin-top: 20px;"><strong>Ready to switch to Shopt?</strong></p>
                     <p>Contact Tom directly:</p>
-                    <p>📧 tom@shopt-sales.co.za | 📱 WhatsApp: +27 76 207 2304</p>
+                    <p>📧 tom@shopt-sales.co.za | 📞 Call Direct: +27 21 014 0117 ext. 104</p>
                     <p>Visit www.shopt.co.za for more information</p>
                     <p style="margin-top: 15px; font-style: italic;">
                         This report is confidential and prepared specifically for <span id="footerCompany2"></span>
@@ -1352,14 +1299,6 @@
             </div>
         </div>
     </div>
-
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/27762072304?text=Hi%20Tom%2C%20I%20just%20completed%20the%20e-commerce%20assessment%20and%20would%20like%20to%20learn%20more%20about%20Shopt" 
-       target="_blank" 
-       class="whatsapp-float">
-        <span>💬</span>
-        <span class="whatsapp-tooltip">Need help? Chat with Tom on WhatsApp</span>
-    </a>
 
     <!-- Success Notification -->
     <div class="success-notification" id="successNotification">
@@ -1896,7 +1835,7 @@
                 // Show success message after print dialog closes
                 setTimeout(() => {
                     if (confirm('Did you successfully save/print your report? Would you like Tom to follow up with additional insights?')) {
-                        window.open(`https://wa.me/27762072304?text=Hi%20Tom%2C%20I%20just%20printed%20my%20assessment%20report%20(${formData.email}).%20I%27d%20like%20to%20discuss%20the%20findings.`, '_blank');
+                        alert('Please call Tom at: +27 21 014 0117 ext. 104\n\nMention that you just printed your assessment report.');
                     }
                 }, 1000);
             }, 100);
@@ -1929,7 +1868,7 @@ RECOMMENDED NEXT STEPS:
 
 To schedule your demo or ask questions:
 📧 Email: tom@shopt-sales.co.za
-📱 WhatsApp: +27 76 207 2304
+📞 Call Direct: +27 21 014 0117 ext. 104
 🌐 Website: www.shopt.co.za
 
 Don't let international platforms hold your business back. Join successful South African businesses who've made the switch to Shopt.
@@ -1985,7 +1924,7 @@ Shopt offers:
 
 Contact Tom at Shopt:
 📧 tom@shopt-sales.co.za
-📱 WhatsApp: +27 76 207 2304
+📞 Call Direct: +27 21 014 0117 ext. 104
 
 Get your free assessment: ${window.location.href}`;
 
@@ -2014,16 +1953,16 @@ Get your free assessment: ${window.location.href}`;
 
         function bookDemo() {
             // In production, this would trigger calendly or similar
-            const message = `Thank you for your interest in Shopt!\n\nWe'll send your detailed assessment report to ${formData.email}.\n\nFor immediate assistance:\n📧 Email: tom@shopt-sales.co.za\n📱 WhatsApp: +27 76 207 2304\n\nWe'll be in touch within 24 hours to schedule your personalized demo.`;
+            const message = `Thank you for your interest in Shopt!\n\nWe'll send your detailed assessment report to ${formData.email}.\n\nFor immediate assistance:\n📧 Email: tom@shopt-sales.co.za\n📞 Call Direct: +27 21 014 0117 ext. 104\n\nWe'll be in touch within 24 hours to schedule your personalized demo.`;
             
             alert(message);
             
             // Send data to backend
             console.log('Sending lead data:', formData);
             
-            // Redirect to WhatsApp for immediate contact
-            if (confirm('Would you like to chat with Tom on WhatsApp right now?')) {
-                window.open(`https://wa.me/27762072304?text=Hi%20Tom%2C%20I%20just%20completed%20the%20assessment%20(${formData.email})%20and%20would%20like%20to%20schedule%20a%20demo`, '_blank');
+            // Redirect to phone call prompt for immediate contact
+            if (confirm('Would you like to call Tom directly to discuss your assessment?')) {
+                alert('Please call Tom at: +27 21 014 0117 ext. 104\n\nMention that you just completed the online assessment.');
             }
         }
 
